@@ -28,6 +28,13 @@ wss.on('connection', function connection(ws) {
       receiverSocket?.send(JSON.stringify({ type: 'offer', offer: msg.offer }));
     }else if(msg.type === 'answer'){
       senderSocket?.send(JSON.stringify({type:'answer',answer:msg.answer}));
+    }else if(msg.type === 'candidate'){
+      //set ice candidtates according to the socket
+      if(ws === senderSocket){
+        receiverSocket?.send(JSON.stringify({type:'candidate',candidate:msg.candidate}));
+      }else if(ws === receiverSocket){
+        senderSocket?.send(JSON.stringify({type:'candidate',candidate:msg.candidate}));
+      }
     }
   });
 });
