@@ -25,8 +25,12 @@ wss.on('connection', function connection(ws) {
     } else if (msg.type === 'receiver') {
       receiverSocket = ws;
     } else if (msg.type === 'offer') {
+      if(ws !== senderSocket) return;
+      console.log('offer received');
       receiverSocket?.send(JSON.stringify({ type: 'offer', offer: msg.offer }));
     }else if(msg.type === 'answer'){
+      if(ws !== receiverSocket) return;
+      console.log('answer received');
       senderSocket?.send(JSON.stringify({type:'answer',answer:msg.answer}));
     }else if(msg.type === 'candidate'){
       //set ice candidtates according to the socket
