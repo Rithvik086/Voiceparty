@@ -5,7 +5,9 @@ const Sender = () => {
   const [pc, setPc] = useState<RTCPeerConnection | null>(null);
 
   useEffect(() => {
-    const ws = new WebSocket(import.meta.env.VITE_WEB_SOCKET_URL || "ws://localhost:8080");
+    const ws = new WebSocket(
+      import.meta.env.VITE_WEB_SOCKET_URL || "ws://localhost:8080"
+    );
     ws.onopen = () => {
       ws.send(JSON.stringify({ type: "sender" }));
     };
@@ -21,7 +23,9 @@ const Sender = () => {
     // ICE candidates
     peer.onicecandidate = (event) => {
       if (event.candidate) {
-        socket.send(JSON.stringify({ type: "candidate", candidate: event.candidate }));
+        socket.send(
+          JSON.stringify({ type: "candidate", candidate: event.candidate })
+        );
       }
     };
 
@@ -36,8 +40,11 @@ const Sender = () => {
     };
 
     // Get local camera
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-    stream.getTracks().forEach(track => peer.addTrack(track, stream));
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: false,
+    });
+    stream.getTracks().forEach((track) => peer.addTrack(track, stream));
 
     // Create and send offer
     const offer = await peer.createOffer();
@@ -46,37 +53,54 @@ const Sender = () => {
   }
 
   return (
-    <div style={{
-      maxWidth: 400,
-      margin: '40px auto',
-      padding: '32px 24px',
-      borderRadius: 16,
-      boxShadow: '0 4px 24px rgba(77,166,255,0.10)',
-      background: 'linear-gradient(135deg,#f8fbff 60%,#eaf3ff 100%)',
-      textAlign: 'center',
-    }}>
-      <h2 style={{marginBottom: 16, color: '#4d6aff', fontWeight: 700, fontSize: 22}}>Sender</h2>
+    <div
+      style={{
+        maxWidth: 400,
+        margin: "40px auto",
+        padding: "32px 24px",
+        borderRadius: 16,
+        boxShadow: "0 4px 24px rgba(77,166,255,0.10)",
+        background: "linear-gradient(135deg,#f8fbff 60%,#eaf3ff 100%)",
+        textAlign: "center",
+      }}
+    >
+      <h2
+        style={{
+          marginBottom: 16,
+          color: "#4d6aff",
+          fontWeight: 700,
+          fontSize: 22,
+        }}
+      >
+        Sender
+      </h2>
       <button
         onClick={startSendingVideo}
         style={{
-          padding: '12px 32px',
+          padding: "12px 32px",
           fontSize: 16,
           fontWeight: 600,
-          color: '#fff',
-          background: 'linear-gradient(90deg,#4da6ff,#4d6aff)',
-          border: 'none',
+          color: "#fff",
+          background: "linear-gradient(90deg,#4da6ff,#4d6aff)",
+          border: "none",
           borderRadius: 8,
-          boxShadow: '0 2px 8px rgba(77,166,255,0.15)',
-          cursor: 'pointer',
+          boxShadow: "0 2px 8px rgba(77,166,255,0.15)",
+          cursor: "pointer",
           marginBottom: 8,
-          transition: 'all 0.2s',
+          transition: "all 0.2s",
         }}
-        onMouseOver={e => e.currentTarget.style.background = 'linear-gradient(90deg,#4d6aff,#4da6ff)'}
-        onMouseOut={e => e.currentTarget.style.background = 'linear-gradient(90deg,#4da6ff,#4d6aff)'}
+        onMouseOver={(e) =>
+          (e.currentTarget.style.background =
+            "linear-gradient(90deg,#4d6aff,#4da6ff)")
+        }
+        onMouseOut={(e) =>
+          (e.currentTarget.style.background =
+            "linear-gradient(90deg,#4da6ff,#4d6aff)")
+        }
       >
         Start Call
       </button>
-      <div style={{marginTop: 16, color: '#888', fontSize: 14}}>
+      <div style={{ marginTop: 16, color: "#888", fontSize: 14 }}>
         Click to start sending your video/audio stream.
       </div>
     </div>
