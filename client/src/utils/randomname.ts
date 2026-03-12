@@ -13,4 +13,5 @@ const generateName = (): string => {
     return `${firstname[findex]} ${lastname[lindex]}`
     
 }
+export default generateName
 
